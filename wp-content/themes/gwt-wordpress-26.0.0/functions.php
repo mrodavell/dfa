@@ -120,11 +120,22 @@ require get_template_directory() . '/inc/function-enable-classic-posts.php';
 
 
 /** MY FUNCTIONS **/
+/*
+             
+
+
+
+
+
+
+
+
+             * */
 
 function display_latest_blog_post() {
     // Query the latest blog post
     $latest_post = new WP_Query(array(
-        'posts_per_page' => 1,  // Number of posts to display (in this case, 1)
+        'posts_per_page' => 5,  // Number of posts to display (in this case, 1)
         'post_status' => 'publish',  // Show only published posts
     ));
 
@@ -133,9 +144,16 @@ function display_latest_blog_post() {
         while ($latest_post->have_posts()) {
             $latest_post->the_post();
 
-            // Display the post title and content
-            echo '<h2>' . get_the_title() . '</h2>';
-            echo '<div>' . get_the_content() . '</div>';
+            // Display a shortened excerpt
+            $excerpt = get_the_excerpt();
+      		echo "<style>.posthover:hover {    color: #2b2be6!important;}</style>";
+            echo "<a class='posthover' href=\"".get_permalink()."\" style=\"text-decoration:none;\">";
+			
+			echo "<div>";
+			echo "<div  style='padding: 17px!important;    border: 1px solid #d6d5d5!important;    margin: 0 6px 4px 0!important;    font-family: work sans!important;    height: auto!important;    background: #fffdfd66!important;'>";
+			echo "<p style='    margin: 9px 0!important;    font-size: 16px!important;    font-weight: 700!important;    text-align: left!important;    color: #4162a1!important;    font-family: roboto!important;font-family: roboto,sans-serif!important;    text-transform: UPPERCASE!important;    letter-spacing: -.7px!important;'>".get_the_title()."</p>";
+			echo "<div style=\"color:#D48C00!important\"><b>".get_the_date('M j, Y')."</b></div>";
+			echo "<p style='margin: 4px 0!important;    font-size: 12px!important;    font-weight: 500!important;    color: #757a7d!important;    font-family: roboto!important;    text-align: justify!important;'>".$excerpt."</p></div></div></a>";
         }
 
         // Reset post data
@@ -153,6 +171,7 @@ function latest_blog_post_shortcode() {
     return ob_get_clean();
 }
 add_shortcode('latest_blog_post', 'latest_blog_post_shortcode');
+
 
 
 
